@@ -1,45 +1,64 @@
-import { GetServerSideProps, NextPage } from 'next';
-interface Props {
-  launch: {
-    mission: string;
-    site: string;
-    timestamp: number;
-    rocket: string;
-  };
-}
+import { NextPage } from 'next';
+import React, { ChangeEvent, useState } from 'react';
+import { useQuery } from 'react-query';
+import Job from '../components/Job';
+import SearchButton from '../components/SearchButton';
+import SearchInput from '../components/SearchInput';
+import { IJob } from '../types/types';
+import { fetcher } from './utils/fetcher';
 
-const IndexPage: NextPage<Props> = ({ launch }) => {
-  const date = new Date(launch.timestamp);
+const IndexPage: NextPage = () => {
+  const [description, setDescription] = useState<string>();
+  const [location, setLocation] = useState<string>();
+
+  const { data, refetch, isLoading, isError } = useQuery<IJob[], Error>(
+    'jobs',
+    async () => {
+      const url = '/api/jobs';
+
+      const params = new URLSearchParams();
+
+      description ? params.set('description', description.toString()) : null;
+      location ? params.set('location', location.toString()) : null;
+
+      return await fetcher(`${url}${params.toString().length > 0 ? '?' : ''}${params.toString()}`);
+    },
+    { enabled: false },
+  );
+
+  if (data && !isLoading && !isError) {
+    console.log(data);
+  }
+
   return (
-    <div className="container mx-auto flex justify-center align-middle">
-      <div className="min-w-0 max-w-lg m-4 p-4 text-black border border-solid border-gray-400 rounded-lg shadow-xs">
-        <h4 className="mb-4 font-semibold"> Next SpaceX Launch: {launch.mission}</h4>
-        <p>
-          {launch.rocket} will take off from {launch.site} on {date.toDateString()}
-        </p>
+    <div className="flex flex-col justify-center w-full space-y-4">
+      <h1 className="text-5xl">GitHub Jobs</h1>
+      <div className="flex flex-row py-12 space-x-6">
+        <SearchInput
+          placeholder="Description..."
+          handleType={(e: ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault;
+            setDescription(e.currentTarget.value);
+          }}
+        />
+        <SearchInput
+          placeholder="Location..."
+          handleType={(e: ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault;
+            setLocation(e.currentTarget.value);
+          }}
+        />
+        <SearchButton handleClick={() => refetch()} type="button">
+          Search
+        </SearchButton>
+      </div>
+      <div className="space-y-4">
+        {data?.map((job) => {
+          return <Job key={job.id} {...job} />;
+        })}
       </div>
     </div>
   );
 };
 
 export default IndexPage;
-
-/*
- * More information about getServerSideProps:
- * https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
- */
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const response = await fetch('https://api.spacexdata.com/v3/launches/next');
-  const nextLaunch = await response.json();
-
-  return {
-    props: {
-      launch: {
-        mission: nextLaunch.mission_name,
-        site: nextLaunch.launch_site.site_name_long,
-        timestamp: nextLaunch.launch_date_unix * 1000,
-        rocket: nextLaunch.rocket.rocket_name,
-      },
-    },
-  };
-};
