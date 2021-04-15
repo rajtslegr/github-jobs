@@ -4,14 +4,16 @@ interface Props {
   type: 'button' | 'submit';
   handleClick: React.MouseEventHandler<Element>;
   children: ReactNode;
+  handleDisabled?: boolean;
 }
 
-const SearchButton: React.FC<Props> = ({ handleClick, type, children }) => {
+const SearchButton: React.FC<Props> = ({ handleClick, handleDisabled, type, children }) => {
   return (
     <button
       type={type}
       onClick={handleClick}
-      className="px-6 py-4 font-bold text-black transition bg-white rounded-full shadow hover:shadow-md"
+      disabled={handleDisabled}
+      className="px-6 py-4 font-bold text-black transition bg-white rounded shadow hover:shadow-md"
     >
       {children}
     </button>

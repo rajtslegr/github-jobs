@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import React, { ChangeEvent, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import Job from '../components/Job';
 import SearchButton from '../components/SearchButton';
 import SearchInput from '../components/SearchInput';
@@ -11,19 +11,27 @@ const IndexPage: NextPage = () => {
   const [description, setDescription] = useState<string>();
   const [location, setLocation] = useState<string>();
 
-  const { data, refetch, isLoading, isError } = useQuery<IJob[], Error>(
+  const { data, refetch, isLoading, isError, fetchNextPage, isFetchingNextPage } = useInfiniteQuery<
+    { data: IJob[]; nextPage: number },
+    Error
+  >(
     'jobs',
     async ({ pageParam = 1 }) => {
-      const url = '/api/jobs?page' + pageParam;
+      const url = '/api/jobs?page=' + pageParam;
 
       const params = new URLSearchParams();
 
       description ? params.set('description', description.toString()) : null;
       location ? params.set('location', location.toString()) : null;
 
-      return await fetcher(`${url}${params.toString()}`);
+      return {
+        data: await fetcher(
+          `${url}${params.toString().length > 0 ? '&' : null}${params.toString()}`,
+        ),
+        nextPage: pageParam,
+      };
     },
-    { enabled: false },
+    { enabled: false, getNextPageParam: (lastPage) => lastPage.nextPage + 1 },
   );
 
   if (data && !isLoading && !isError) {
@@ -53,10 +61,25 @@ const IndexPage: NextPage = () => {
         </SearchButton>
       </div>
       <div className="space-y-4">
-        {data?.map((job) => {
-          return <Job key={job.id} {...job} />;
-        })}
+        {data?.pages?.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.data.map((job) => {
+              return <Job key={job.id} {...job} />;
+            })}
+          </React.Fragment>
+        ))}
       </div>
+      {data && data?.pages[data?.pages?.length - 1]?.data?.length % 50 === 0 && (
+        <div className="self-end">
+          <SearchButton
+            type="button"
+            handleClick={() => fetchNextPage()}
+            handleDisabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+          </SearchButton>
+        </div>
+      )}
     </div>
   );
 };

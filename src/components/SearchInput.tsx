@@ -10,7 +10,7 @@ const SearchInput: React.FC<Props> = ({ handleType, placeholder }) => {
     <input
       type="search"
       onChange={handleType}
-      className="w-full p-4 bg-white rounded-full shadow"
+      className="w-full p-4 bg-white rounded shadow"
       placeholder={placeholder}
     />
   );
