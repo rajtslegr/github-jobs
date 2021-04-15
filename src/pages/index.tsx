@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import React, { ChangeEvent, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import Job from '../components/Job';
+import LoadingIcon from '../components/LoadingIcon';
 import SearchButton from '../components/SearchButton';
 import SearchInput from '../components/SearchInput';
 import { IJob } from '../types/types';
@@ -11,10 +12,15 @@ const IndexPage: NextPage = () => {
   const [description, setDescription] = useState<string>();
   const [location, setLocation] = useState<string>();
 
-  const { data, refetch, isLoading, isError, fetchNextPage, isFetchingNextPage } = useInfiniteQuery<
-    { data: IJob[]; nextPage: number },
-    Error
-  >(
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    isFetchingNextPage,
+    remove,
+  } = useInfiniteQuery<{ data: IJob[]; nextPage: number }, Error>(
     'jobs',
     async ({ pageParam = 1 }) => {
       const url = '/api/jobs?page=' + pageParam;
@@ -38,9 +44,17 @@ const IndexPage: NextPage = () => {
     console.log(data);
   }
 
+  const checkMore = (): boolean | undefined => {
+    return (
+      data &&
+      data?.pages[data?.pages?.length - 1]?.data?.length > 0 &&
+      data?.pages[data?.pages?.length - 1]?.data?.length % 50 === 0
+    );
+  };
+
   return (
     <div className="flex flex-col justify-center w-full space-y-4">
-      <h1 className="text-5xl">GitHub Jobs</h1>
+      <h1 className="text-5xl font-bold underline">GitHub Jobs</h1>
       <div className="flex flex-row py-12 space-x-6">
         <SearchInput
           placeholder="Description..."
@@ -56,7 +70,13 @@ const IndexPage: NextPage = () => {
             setLocation(e.currentTarget.value);
           }}
         />
-        <SearchButton handleClick={() => refetch()} type="button">
+        <SearchButton
+          handleClick={() => {
+            remove();
+            refetch();
+          }}
+          type="button"
+        >
           Search
         </SearchButton>
       </div>
@@ -69,17 +89,19 @@ const IndexPage: NextPage = () => {
           </React.Fragment>
         ))}
       </div>
-      {data && data?.pages[data?.pages?.length - 1]?.data?.length % 50 === 0 && (
+      {checkMore() && (
         <div className="self-end">
           <SearchButton
             type="button"
             handleClick={() => fetchNextPage()}
             handleDisabled={isFetchingNextPage}
           >
-            {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+            {isFetchingNextPage ? <div className="w-5 h-5">{LoadingIcon}</div> : 'Load More'}
           </SearchButton>
         </div>
       )}
+      {isLoading && <div className="self-center w-10 h-10">{LoadingIcon}</div>}
+      {data?.pages[0].data.length === 0 && <div className="self-center">Nothing found...</div>}
     </div>
   );
 };
