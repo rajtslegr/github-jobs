@@ -13,15 +13,15 @@ const IndexPage: NextPage = () => {
 
   const { data, refetch, isLoading, isError } = useQuery<IJob[], Error>(
     'jobs',
-    async () => {
-      const url = '/api/jobs';
+    async ({ pageParam = 1 }) => {
+      const url = '/api/jobs?page' + pageParam;
 
       const params = new URLSearchParams();
 
       description ? params.set('description', description.toString()) : null;
       location ? params.set('location', location.toString()) : null;
 
-      return await fetcher(`${url}${params.toString().length > 0 ? '?' : ''}${params.toString()}`);
+      return await fetcher(`${url}${params.toString()}`);
     },
     { enabled: false },
   );
