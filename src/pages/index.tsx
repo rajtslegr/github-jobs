@@ -6,7 +6,7 @@ import LoadingIcon from '../components/LoadingIcon';
 import SearchButton from '../components/SearchButton';
 import SearchInput from '../components/SearchInput';
 import { IJob } from '../types/types';
-import fetcher from './utils/fetcher';
+import { fetcher } from '../utils/fetcher';
 
 const IndexPage: NextPage = () => {
   const [description, setDescription] = useState<string>();
