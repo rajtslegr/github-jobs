@@ -55,7 +55,15 @@ const IndexPage: NextPage = () => {
   return (
     <div className="flex flex-col justify-center w-full space-y-6">
       <h1 className="text-5xl font-bold">GitHub Jobs</h1>
-      <div className="flex flex-row py-12 space-x-6">
+
+      <form
+        className="flex flex-row py-12 space-x-6"
+        onSubmit={(e) => {
+          e.preventDefault();
+          remove();
+          refetch();
+        }}
+      >
         <SearchInput
           placeholder="Description..."
           handleType={(e: ChangeEvent<HTMLInputElement>) => {
@@ -71,15 +79,17 @@ const IndexPage: NextPage = () => {
           }}
         />
         <SearchButton
-          handleClick={() => {
-            remove();
-            refetch();
-          }}
-          type="button"
+          // handleClick={() => {
+          //   remove();
+          //   refetch();
+          // }}
+          handleDisabled={!description && !location}
+          type="submit"
         >
           Search
         </SearchButton>
-      </div>
+      </form>
+
       <div className="grid gap-12 2xl:grid-cols-3 lg:grid-cols-2">
         {data?.pages?.map((group, i) => (
           <React.Fragment key={i}>
