@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import React, { ChangeEvent, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import Job from '../components/Job';
+import JobCard from '../components/JobCard';
 import LoadingIcon from '../components/LoadingIcon';
 import SearchButton from '../components/SearchButton';
 import SearchInput from '../components/SearchInput';
@@ -53,8 +53,8 @@ const IndexPage: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center w-full space-y-4">
-      <h1 className="text-5xl font-bold underline">GitHub Jobs</h1>
+    <div className="flex flex-col justify-center w-full space-y-6">
+      <h1 className="text-5xl font-bold">GitHub Jobs</h1>
       <div className="flex flex-row py-12 space-x-6">
         <SearchInput
           placeholder="Description..."
@@ -80,11 +80,11 @@ const IndexPage: NextPage = () => {
           Search
         </SearchButton>
       </div>
-      <div className="space-y-4">
+      <div className="grid gap-12 2xl:grid-cols-3 lg:grid-cols-2">
         {data?.pages?.map((group, i) => (
           <React.Fragment key={i}>
             {group.data.map((job) => {
-              return <Job key={job.id} {...job} />;
+              return <JobCard key={job.id} {...job} />;
             })}
           </React.Fragment>
         ))}

@@ -13,7 +13,7 @@ const SearchButton: React.FC<Props> = ({ handleClick, handleDisabled, type, chil
       type={type}
       onClick={handleClick}
       disabled={handleDisabled}
-      className="px-6 py-4 font-bold text-black transition bg-white rounded shadow hover:shadow-md"
+      className="px-6 py-4 font-bold text-white transition shadow rounded-xl bg-gh-brightBlue"
     >
       {children}
     </button>

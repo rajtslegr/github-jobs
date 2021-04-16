@@ -1,6 +1,6 @@
 const LoadingIcon = (
   <svg
-    className="w-full h-full text-black animate-spin"
+    className="w-full h-full text-gh-cyan animate-spin"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
