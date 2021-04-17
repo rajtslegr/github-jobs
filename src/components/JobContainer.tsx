@@ -4,7 +4,7 @@ import React from 'react';
 import { IJob } from '../types/types';
 
 interface Props {
-  data: IJob;
+  data?: IJob;
   loading: boolean;
   error: boolean;
 }
@@ -38,7 +38,7 @@ const JobContainer: React.FC<Props> = ({ data, loading, error }) => {
           </div>
         )}
         {error && <div>Oops, something went wrong.</div>}
-        {!loading && !error && (
+        {data && !loading && !error && (
           <>
             {data?.company_logo && (
               <img

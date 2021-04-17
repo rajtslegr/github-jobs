@@ -1,8 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
 import Router from 'next/router';
+import React from 'react';
 import { useQuery } from 'react-query';
 import Button from '../../components/Button';
 import JobContainer from '../../components/JobContainer';
+import { IJob } from '../../types/types';
 import { fetcher } from '../../utils/fetcher';
 
 interface Props {
@@ -10,7 +13,7 @@ interface Props {
 }
 
 const Job: NextPage<Props> = ({ id }) => {
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading, isError } = useQuery<IJob, Error>(
     'job',
     async () => {
       const url = `/api/job?id=${id}`;
@@ -22,6 +25,9 @@ const Job: NextPage<Props> = ({ id }) => {
 
   return (
     <>
+      <Head>
+        <title>{data?.title}</title>
+      </Head>
       <JobContainer data={data} loading={isLoading} error={isError} />
       <div className="flex flex-row justify-end pt-6">
         <Button
