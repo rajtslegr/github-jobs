@@ -13,7 +13,7 @@ const Button: React.FC<Props> = ({ handleClick, handleDisabled, type, children }
       type={type}
       onClick={handleClick}
       disabled={handleDisabled}
-      className="px-6 py-4 font-bold text-white transition transform shadow rounded-xl bg-gh-brightBlue motion-safe:hover:scale-110 disabled:opacity-50"
+      className="px-6 py-4 font-bold text-white transition transform shadow focus:outline-none rounded-xl bg-gh-brightBlue motion-safe:hover:scale-110 disabled:opacity-50"
     >
       {children}
     </button>

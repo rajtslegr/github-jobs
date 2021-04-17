@@ -32,12 +32,12 @@ const JobContainer: React.FC<IJob> = ({
             {company}
           </a>
         </h1>
-        <div className="flex flex-row">
-          <div className="pr-2 font-light text-gh-cyan">{location}</div>
+        <div className="flex flex-row font-light text-gh-cyan">
+          <div className="pr-2">{location}</div>
           &#8729;
-          <div className="pl-2 font-light text-gh-cyan">{type}</div>
+          <div className="pl-2">{type}</div>
         </div>
-        <div className="font-light text-gh-cyan">Added {dayjs(created_at).toNow(true)} ago.</div>
+        <div className="font-light text-gh-cyan">Added {dayjs(created_at).toNow(true)} ago</div>
         <div className="space-y-4" dangerouslySetInnerHTML={{ __html: description }} />
         <div className="text-gh-cyan" dangerouslySetInnerHTML={{ __html: how_to_apply }}></div>
       </div>

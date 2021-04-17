@@ -1,16 +1,15 @@
-import { NextPage } from 'next';
-import Router, { useRouter } from 'next/router';
+import { GetServerSideProps, NextPage } from 'next';
+import Router from 'next/router';
 import { useQuery } from 'react-query';
 import Button from '../../components/Button';
 import JobContainer from '../../components/JobContainer';
 import { fetcher } from '../../utils/fetcher';
 
-const Job: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
+interface Props {
+  id: string;
+}
 
-  console.log(id);
-
+const Job: NextPage<Props> = ({ id }) => {
   const { data /*, isLoading, isError */ } = useQuery(
     'job',
     async () => {
@@ -36,6 +35,14 @@ const Job: NextPage = () => {
       </div>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const id = params?.id;
+
+  return {
+    props: { id },
+  };
 };
 
 export default Job;
