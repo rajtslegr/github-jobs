@@ -51,7 +51,6 @@ const IndexPage: NextPage = () => {
   return (
     <div className="flex flex-col justify-center w-full space-y-6">
       <h1 className="text-5xl font-bold">GitHub Jobs</h1>
-
       <form
         className="flex flex-row py-12 space-x-6"
         onSubmit={(e) => {
@@ -85,7 +84,6 @@ const IndexPage: NextPage = () => {
           Search
         </Button>
       </form>
-
       <div className="grid gap-12 2xl:grid-cols-3 lg:grid-cols-2">
         {data?.pages?.map((group, i) => (
           <React.Fragment key={i}>

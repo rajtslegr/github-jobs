@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Job: NextPage<Props> = ({ id }) => {
-  const { data /*, isLoading, isError */ } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     'job',
     async () => {
       const url = `/api/job?id=${id}`;
@@ -22,7 +22,7 @@ const Job: NextPage<Props> = ({ id }) => {
 
   return (
     <>
-      <JobContainer {...data} />
+      <JobContainer data={data} loading={isLoading} error={isError} />
       <div className="flex flex-row justify-end pt-6">
         <Button
           type="button"
