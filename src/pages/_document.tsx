@@ -18,10 +18,10 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="shortcut icon" type="image/jpg" href="/static/images/hero.png" />
+          <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
           <meta property="title" content="GitHub Jobs" />
           <meta name="description" content="GitHub Jobs" />
-          <meta name="keywords" content="github, jobs"></meta>
+          <meta name="keywords" content="github, jobs" />
         </Head>
         <body>
           <Main />
