@@ -11,3 +11,9 @@ export const getJobs = (
 
   return fetch(url.href);
 };
+
+export const getJob = (id?: string | string[]): Promise<Response> => {
+  const url = `https://jobs.github.com/positions/${id}.json`;
+
+  return fetch(url);
+};

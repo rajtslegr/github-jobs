@@ -7,7 +7,7 @@ interface Props {
   handleDisabled?: boolean;
 }
 
-const SearchButton: React.FC<Props> = ({ handleClick, handleDisabled, type, children }) => {
+const Button: React.FC<Props> = ({ handleClick, handleDisabled, type, children }) => {
   return (
     <button
       type={type}
@@ -20,4 +20,4 @@ const SearchButton: React.FC<Props> = ({ handleClick, handleDisabled, type, chil
   );
 };
 
-export default SearchButton;
+export default Button;

@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
 import React, { ChangeEvent, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import Button from '../components/Button';
 import JobCard from '../components/JobCard';
 import LoadingIcon from '../components/LoadingIcon';
-import SearchButton from '../components/SearchButton';
 import SearchInput from '../components/SearchInput';
 import { IJob } from '../types/types';
 import { fetcher } from '../utils/fetcher';
@@ -40,10 +40,6 @@ const IndexPage: NextPage = () => {
     { enabled: false, getNextPageParam: (lastPage) => lastPage.nextPage + 1 },
   );
 
-  if (data && !isLoading && !isError) {
-    console.log(data);
-  }
-
   const checkMore = (): boolean | undefined => {
     return (
       data &&
@@ -78,7 +74,7 @@ const IndexPage: NextPage = () => {
             setLocation(e.currentTarget.value);
           }}
         />
-        <SearchButton
+        <Button
           // handleClick={() => {
           //   remove();
           //   refetch();
@@ -87,7 +83,7 @@ const IndexPage: NextPage = () => {
           type="submit"
         >
           Search
-        </SearchButton>
+        </Button>
       </form>
 
       <div className="grid gap-12 2xl:grid-cols-3 lg:grid-cols-2">
@@ -101,16 +97,17 @@ const IndexPage: NextPage = () => {
       </div>
       {checkMore() && (
         <div className="self-end">
-          <SearchButton
+          <Button
             type="button"
             handleClick={() => fetchNextPage()}
             handleDisabled={isFetchingNextPage}
           >
             {isFetchingNextPage ? <div className="w-5 h-5">{LoadingIcon}</div> : 'Load More'}
-          </SearchButton>
+          </Button>
         </div>
       )}
       {isLoading && <div className="self-center w-10 h-10">{LoadingIcon}</div>}
+      {isError && <div className="self-center w-10 h-10">Oops, something went wrong...</div>}
       {data?.pages[0].data.length === 0 && <div className="self-center">Nothing found...</div>}
     </div>
   );
