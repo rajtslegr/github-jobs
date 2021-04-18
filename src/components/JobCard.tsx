@@ -2,7 +2,13 @@ import Link from 'next/link';
 import React from 'react';
 import { IJob } from '../types/types';
 
-const JobCard: React.FC<IJob> = ({ id, title, type, company, location /* company_logo */ }) => {
+const JobCard: React.FC<IJob> = ({
+  id,
+  title,
+  type,
+  company,
+  location /* company_logo */,
+}) => {
   return (
     <Link href={`/job/${encodeURIComponent(id)}`}>
       <a>

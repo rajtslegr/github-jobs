@@ -5,7 +5,9 @@ export const getJobs = (
 ): Promise<Response> => {
   const url = new URL('https://jobs.github.com/positions.json');
 
-  description ? url.searchParams.append('description', description.toString()) : null;
+  description
+    ? url.searchParams.append('description', description.toString())
+    : null;
   location ? url.searchParams.append('location', location.toString()) : null;
   page ? url.searchParams.append('page', page.toString()) : null;
 

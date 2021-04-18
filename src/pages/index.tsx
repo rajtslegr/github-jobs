@@ -33,7 +33,9 @@ const IndexPage: NextPage = () => {
 
       return {
         data: await fetcher(
-          `${url}${params.toString().length > 0 ? '&' : null}${params.toString()}`,
+          `${url}${
+            params.toString().length > 0 ? '&' : null
+          }${params.toString()}`,
         ),
         nextPage: pageParam,
       };
@@ -105,13 +107,25 @@ const IndexPage: NextPage = () => {
               handleClick={() => fetchNextPage()}
               handleDisabled={isFetchingNextPage}
             >
-              {isFetchingNextPage ? <div className="w-5 h-5">{LoadingIcon}</div> : 'Load More'}
+              {isFetchingNextPage ? (
+                <div className="w-5 h-5">{LoadingIcon}</div>
+              ) : (
+                'Load More'
+              )}
             </Button>
           </div>
         )}
-        {isLoading && <div className="self-center w-10 h-10">{LoadingIcon}</div>}
-        {isError && <div className="self-center w-10 h-10">Oops, something went wrong...</div>}
-        {data?.pages[0].data.length === 0 && <div className="self-center">Nothing found...</div>}
+        {isLoading && (
+          <div className="self-center w-10 h-10">{LoadingIcon}</div>
+        )}
+        {isError && (
+          <div className="self-center w-10 h-10">
+            Oops, something went wrong...
+          </div>
+        )}
+        {data?.pages[0].data.length === 0 && (
+          <div className="self-center">Nothing found...</div>
+        )}
       </div>
     </>
   );

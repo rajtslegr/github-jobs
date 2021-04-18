@@ -7,7 +7,12 @@ interface Props {
   handleDisabled?: boolean;
 }
 
-const Button: React.FC<Props> = ({ handleClick, handleDisabled, type, children }) => {
+const Button: React.FC<Props> = ({
+  handleClick,
+  handleDisabled,
+  type,
+  children,
+}) => {
   return (
     <button
       type={type}

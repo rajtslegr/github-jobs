@@ -49,7 +49,11 @@ const JobContainer: React.FC<Props> = ({ data, loading, error }) => {
             )}
             <div className="w-2/3 text-4xl font-bold">{data?.title}</div>
             <h1 className="text-xl font-bold">
-              <a href={data?.company_url} target="_blank" rel="noopener noreferrer">
+              <a
+                href={data?.company_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {data?.company}
               </a>
             </h1>
@@ -61,7 +65,10 @@ const JobContainer: React.FC<Props> = ({ data, loading, error }) => {
             <div className="font-light text-gh-cyan">
               Added {dayjs(data?.created_at).toNow(true)} ago
             </div>
-            <div className="space-y-4" dangerouslySetInnerHTML={{ __html: data?.description }} />
+            <div
+              className="space-y-4"
+              dangerouslySetInnerHTML={{ __html: data?.description }}
+            />
             <div
               className="text-gh-cyan"
               dangerouslySetInnerHTML={{ __html: data?.how_to_apply }}
